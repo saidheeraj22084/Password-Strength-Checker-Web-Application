@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #passwordInput {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        #feedback {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Password Strength Checker</h2>
+    <label for="passwordInput">Enter your password:</label>
+    <input type="password" id="passwordInput">
+    <br>
+    <button onclick="checkPassword()">Check Password</button>
+    <p id="feedback"></p>
+
+    <script>
+        function checkPassword() {
+            var passwordInput = document.getElementById("passwordInput");
+            var feedbackElement = document.getElementById("feedback");
+
+            var userPassword = passwordInput.value;
+
+            fetch('/check_password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `password=${userPassword}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                feedbackElement.innerHTML = data.feedback;
+            });
+        }
+    </script>
+</body>
+</html>
